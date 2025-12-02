@@ -1,0 +1,48 @@
+{
+  "name": "deep-discover-server",
+  "version": "1.0.0",
+  "description": "Find local guide website built with mern stack.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/md-suhag/deep-discover-server.git"
+  },
+  "keywords": [
+    "tour",
+    "travel",
+    "guide",
+    "next js",
+    "express js"
+  ],
+  "author": "md-suhag",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/md-suhag/deep-discover-server/issues"
+  },
+  "homepage": "https://github.com/md-suhag/deep-discover-server#readme",
+  "dependencies": {
+    "bcryptjs": "^3.0.2",
+    "cookie-parser": "^1.4.7",
+    "cors": "^2.8.5",
+    "dotenv": "^17.2.1",
+    "express": "^5.1.0",
+    "http-status-codes": "^2.3.0",
+    "jsonwebtoken": "^9.0.2",
+    "mongoose": "^8.18.0",
+    "zod": "^4.1.4"
+  },
+  "devDependencies": {
+    "@eslint/js": "^9.34.0",
+    "@types/bcryptjs": "^2.4.6",
+    "@types/cookie-parser": "^1.4.9",
+    "@types/cors": "^2.8.19",
+    "@types/express": "^5.0.3",
+    "@types/jsonwebtoken": "^9.0.10",
+    "eslint": "^9.34.0",
+    "typescript": "^5.9.2",
+    "typescript-eslint": "^8.41.0"
+  }
+}
