@@ -1,0 +1,11 @@
+export enum USER_ROLES {
+  TOURIST = "TOURIST",
+  GUIDE = "GUIDE",
+  SUPER_ADMIN = "SUPER_ADMIN",
+  ADMIN = "ADMIN",
+}
+export enum USER_STATUS {
+  ACTIVE = "ACTIVE",
+  INACTIVE = "INACTIVE",
+  BLOCKED = "BLOCKED",
+}
