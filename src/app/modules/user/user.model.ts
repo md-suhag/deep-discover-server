@@ -45,6 +45,19 @@ const userSchema = new Schema<IUser, UserModal>(
   }
 );
 
+userSchema.statics.isExistUserByEmail = async (email: string) => {
+  const isExist = await User.findOne({ email });
+  return isExist;
+};
+
+//is match password
+userSchema.statics.isMatchPassword = async (
+  password: string,
+  hashPassword: string
+): Promise<boolean> => {
+  return await bcrypt.compare(password, hashPassword);
+};
+
 //check user
 userSchema.pre("save", async function (next) {
   //check user

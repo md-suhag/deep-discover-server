@@ -17,7 +17,10 @@ export interface IUser {
   updatedAt?: Date;
 }
 
-export type UserModal = {} & Model<IUser>;
+export type UserModal = {
+  isExistUserByEmail(email: string): Promise<IUser | null>;
+  isMatchPassword(password: string, hashPassword: string): boolean;
+} & Model<IUser>;
 
 export interface ICreateGuidePayload {
   name: string;

@@ -1,13 +1,13 @@
 import { z } from "zod";
 
-export const createTouristZodSchema = z.object({
+const createTouristZodSchema = z.object({
   name: z.string({ message: "Name is required" }),
   email: z.email({ message: "Email must be valid" }),
   password: z
     .string()
     .min(8, { message: "Password must be at least 8 characters long." }),
 });
-export const createGuideZodSchema = z.object({
+const createGuideZodSchema = z.object({
   name: z.string({ message: "Name is required" }),
   email: z.email({ message: "Email must be valid" }),
   password: z
