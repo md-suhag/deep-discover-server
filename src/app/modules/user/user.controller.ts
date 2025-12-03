@@ -13,7 +13,17 @@ const createTourist = catchAsync(async (req: Request, res: Response) => {
     data: result,
   });
 });
+const createGuide = catchAsync(async (req: Request, res: Response) => {
+  const result = await UserServices.createGuide(req.body);
+  sendResponse(res, {
+    success: true,
+    statusCode: StatusCodes.CREATED,
+    message: "Registration successfull",
+    data: result,
+  });
+});
 
 export const UserControllers = {
   createTourist,
+  createGuide,
 };

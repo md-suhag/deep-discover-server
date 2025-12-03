@@ -10,5 +10,10 @@ router.post(
   validateRequest(UserValidation.createTouristZodSchema),
   UserControllers.createTourist
 );
+router.post(
+  "/guide",
+  validateRequest(UserValidation.createGuideZodSchema),
+  UserControllers.createGuide
+);
 
 export const userRoutes = router;

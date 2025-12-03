@@ -18,3 +18,12 @@ export interface IUser {
 }
 
 export type UserModal = {} & Model<IUser>;
+
+export interface ICreateGuidePayload {
+  name: string;
+  email: string;
+  password: string;
+
+  expertise: string[];
+  dailyRate: number;
+}
