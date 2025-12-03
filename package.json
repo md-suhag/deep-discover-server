@@ -4,7 +4,10 @@
   "description": "Find local guide website built with mern stack.",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "node ./dist/server.js",
+    "dev": "ts-node-dev --respawn --transpile-only ./src/server.ts ",
+    "build": "tsc",
+    "lint": "npx eslint ./src"
   },
   "repository": {
     "type": "git",
@@ -42,6 +45,7 @@
     "@types/express": "^5.0.3",
     "@types/jsonwebtoken": "^9.0.10",
     "eslint": "^9.34.0",
+    "ts-node-dev": "^2.0.0",
     "typescript": "^5.9.2",
     "typescript-eslint": "^8.41.0"
   }

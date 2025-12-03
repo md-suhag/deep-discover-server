@@ -1,6 +1,8 @@
+import { Model } from "mongoose";
 import { USER_ROLES, USER_STATUS } from "./user.constant";
 
 export interface IUser {
+  _id: string;
   name: string;
   email: string;
   password: string;
@@ -14,3 +16,5 @@ export interface IUser {
   createdAt?: Date;
   updatedAt?: Date;
 }
+
+export type UserModal = {} & Model<IUser>;

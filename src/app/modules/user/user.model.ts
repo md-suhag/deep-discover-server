@@ -1,14 +1,18 @@
 import { Schema, model } from "mongoose";
-import { IUser } from "./user.interface";
+import { IUser, UserModal } from "./user.interface";
 import { USER_ROLES, USER_STATUS } from "./user.constant";
+import AppError from "../../errorHelpers/AppError";
+import { StatusCodes } from "http-status-codes";
+import bcrypt from "bcryptjs";
+import { envVars } from "../../config/env";
 
-const userSchema = new Schema<IUser>(
+const userSchema = new Schema<IUser, UserModal>(
   {
     name: { type: String, required: true, trim: true },
 
     email: { type: String, required: true, unique: true, lowercase: true },
 
-    password: { type: String, required: true },
+    password: { type: String, required: true, minLength: 8, select: 0 },
 
     role: {
       type: String,
@@ -41,4 +45,21 @@ const userSchema = new Schema<IUser>(
   }
 );
 
-export const User = model<IUser>("User", userSchema);
+//check user
+userSchema.pre("save", async function (next) {
+  //check user
+  const isExist = await User.findOne({ email: this.email });
+  if (isExist) {
+    throw new AppError(StatusCodes.BAD_REQUEST, "Email already exist!");
+  }
+
+  //password hash
+  if (this.password) {
+    this.password = await bcrypt.hash(
+      this.password,
+      Number(envVars.BCRYPT_SALT_ROUND)
+    );
+  }
+  next();
+});
+export const User = model<IUser, UserModal>("User", userSchema);
