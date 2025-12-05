@@ -1,0 +1,4 @@
+export enum LISTING_STATUS {
+  ACTIVE = "ACTIVE",
+  INACTIVE = "INACTIVE",
+}

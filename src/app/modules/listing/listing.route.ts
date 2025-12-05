@@ -2,4 +2,4 @@ import express from "express";
 
 const router = express.Router();
 
-export const touristRoutes = router;
+export const listingRoutes = router;
