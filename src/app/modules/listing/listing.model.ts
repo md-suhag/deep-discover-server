@@ -19,9 +19,7 @@ const listingSchema = new Schema<IListing>(
 
     slug: {
       type: String,
-      required: true,
       unique: true,
-      index: true,
       lowercase: true,
     },
 
