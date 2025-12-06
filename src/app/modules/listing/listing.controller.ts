@@ -84,10 +84,24 @@ const deleteListing = catchAsync(async (req: Request, res: Response) => {
     data: result,
   });
 });
+const getAllListings = catchAsync(async (req: Request, res: Response) => {
+  const result = await ListingServices.getAllListings(
+    req.query as Record<string, string>
+  );
+
+  sendResponse(res, {
+    success: true,
+    statusCode: StatusCodes.OK,
+    message: "All Listing retrieved successfully",
+    data: result.data,
+    meta: result.meta,
+  });
+});
 
 export const ListingControllers = {
   createListing,
   getSingleListing,
   updateListing,
   deleteListing,
+  getAllListings,
 };

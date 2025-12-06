@@ -32,4 +32,6 @@ router.delete(
   ListingControllers.deleteListing
 );
 
+router.get("/", ListingControllers.getAllListings);
+
 export const listingRoutes = router;

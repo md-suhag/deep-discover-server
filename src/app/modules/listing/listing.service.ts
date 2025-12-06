@@ -2,6 +2,8 @@ import { StatusCodes } from "http-status-codes";
 import AppError from "../../errorHelpers/AppError";
 import { IListing } from "./listing.interface";
 import { Listing } from "./listing.model";
+import { QueryBuilder } from "../../utils/QueryBuilder";
+import { ListingSearchableFields } from "./listing.constant";
 
 const createListing = async (payload: Partial<IListing>) => {
   const listing = await Listing.create(payload);
@@ -63,9 +65,34 @@ const deleteListing = async (listingId: string, guideId: string) => {
   return null;
 };
 
+const getAllListings = async (query: Record<string, string>) => {
+  const queryBuilder = new QueryBuilder(
+    Listing.find().select("title slug price city duration images"),
+    query
+  );
+
+  const allBlogs = queryBuilder
+    .search(ListingSearchableFields)
+    .filter()
+    .sort()
+    .fields()
+    .paginate();
+
+  const [data, meta] = await Promise.all([
+    allBlogs.build(),
+    queryBuilder.getMeta(),
+  ]);
+
+  return {
+    data,
+    meta,
+  };
+};
+
 export const ListingServices = {
   createListing,
   getSingleListing,
   updateListing,
   deleteListing,
+  getAllListings,
 };
