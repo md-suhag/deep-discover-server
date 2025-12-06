@@ -14,4 +14,11 @@ router.post(
   BookingControllers.requestBooking
 );
 
+router.patch(
+  "/:id",
+  checkAuth(USER_ROLES.GUIDE),
+  validateRequest(BookingValidation.updateBookingStatusZodSchema),
+  BookingControllers.updateBookingStatus
+);
+
 export const bookingRoutes = router;
