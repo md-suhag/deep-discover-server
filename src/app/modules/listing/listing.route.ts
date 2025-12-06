@@ -16,4 +16,12 @@ router.post(
   ListingControllers.createListing
 );
 
+router.patch(
+  "/:id",
+  checkAuth(USER_ROLES.GUIDE),
+  multipleImageUpload,
+  validateRequest(ListingValidation.updateListingZodSchema),
+  ListingControllers.updateListing
+);
+
 export const listingRoutes = router;
