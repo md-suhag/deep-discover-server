@@ -26,6 +26,19 @@ const createListing = catchAsync(async (req: Request, res: Response) => {
     data: result,
   });
 });
+const getSingleListing = catchAsync(async (req: Request, res: Response) => {
+  const listingId = req.params.id;
+
+  const result = await ListingServices.getSingleListing(listingId);
+
+  sendResponse(res, {
+    success: true,
+    statusCode: StatusCodes.OK,
+    message: "Listing retrieved successfully",
+    data: result,
+  });
+});
+
 const updateListing = catchAsync(async (req: Request, res: Response) => {
   let imageUrls: string[] | undefined;
 
@@ -56,7 +69,25 @@ const updateListing = catchAsync(async (req: Request, res: Response) => {
   });
 });
 
+const deleteListing = catchAsync(async (req: Request, res: Response) => {
+  const listingId = req.params.id;
+
+  const result = await ListingServices.deleteListing(
+    listingId,
+    req.user.userId
+  );
+
+  sendResponse(res, {
+    success: true,
+    statusCode: StatusCodes.OK,
+    message: "Listing deleted successfully",
+    data: result,
+  });
+});
+
 export const ListingControllers = {
   createListing,
+  getSingleListing,
   updateListing,
+  deleteListing,
 };
