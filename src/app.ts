@@ -7,8 +7,15 @@ import notFound from "./app/middlewares/notFound";
 import { envVars } from "./app/config/env";
 
 import cookieParser from "cookie-parser";
+import { handleStripeWebhook } from "./app/webhook/handleStripeWebhook";
 
 const app = express();
+
+app.use(
+  "/api/v1/stripe/webhook",
+  express.raw({ type: "application/json" }),
+  handleStripeWebhook
+);
 
 app.set("trust proxy", 1);
 app.use(express.json());
