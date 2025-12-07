@@ -14,6 +14,7 @@ interface EnvConfig {
   JWT_REFRESH_EXPIRES: string;
   SUPER_ADMIN_EMAIL: string;
   SUPER_ADMIN_PASSWORD: string;
+  APPLICATION_FEE_PERCENT: string;
   CLOUDINARY: {
     CLOUDINARY_CLOUD_NAME: string;
     CLOUDINARY_API_KEY: string;
@@ -45,6 +46,7 @@ const loadEnvVariables = (): EnvConfig => {
     "STRIPE_API_SECRET",
     "CONNECT_WEBHOOK_SECRET",
     "WEBHOOK_SECRET",
+    "APPLICATION_FEE_PERCENT",
   ];
   requiredEnvVariables.forEach((key) => {
     if (!process.env[key]) {
@@ -63,6 +65,7 @@ const loadEnvVariables = (): EnvConfig => {
     JWT_REFRESH_EXPIRES: process.env.JWT_REFRESH_EXPIRES as string,
     SUPER_ADMIN_EMAIL: process.env.SUPER_ADMIN_EMAIL as string,
     SUPER_ADMIN_PASSWORD: process.env.SUPER_ADMIN_PASSWORD as string,
+    APPLICATION_FEE_PERCENT: process.env.APPLICATION_FEE_PERCENT as string,
     CLOUDINARY: {
       CLOUDINARY_CLOUD_NAME: process.env.CLOUDINARY_CLOUD_NAME as string,
       CLOUDINARY_API_KEY: process.env.CLOUDINARY_API_KEY as string,

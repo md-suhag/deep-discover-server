@@ -3,6 +3,11 @@ import Stripe from "stripe";
 import { envVars } from "../config/env";
 import stripe from "../config/stripe";
 import { Guide } from "../modules/guide/guide.model";
+import { Booking } from "../modules/booking/booking.model";
+import {
+  BOOKING_STATUS,
+  PAYMENT_STATUS,
+} from "../modules/booking/booking.constant";
 
 const handleAccountUpdated = async (account: Stripe.Account) => {
   const guide = await Guide.findOne({ stripeAccountId: account.id });
@@ -13,6 +18,18 @@ const handleAccountUpdated = async (account: Stripe.Account) => {
   const isReady = account.details_submitted && account.charges_enabled;
   guide.isStripeAccountReady = isReady;
   await guide.save();
+};
+const handlePaymentIntentSuccess = async (
+  paymentIntent: Stripe.PaymentIntent
+) => {
+  await Booking.findOneAndUpdate(
+    { transactionId: paymentIntent.id },
+    {
+      status: BOOKING_STATUS.COMPLETED,
+      paymentStatus: PAYMENT_STATUS.PAID,
+    },
+    { runValidators: true }
+  );
 };
 
 export const handleStripeWebhook = async (req: Request, res: Response) => {
@@ -44,7 +61,11 @@ export const handleStripeWebhook = async (req: Request, res: Response) => {
       case "account.updated":
         await handleAccountUpdated(event.data.object as Stripe.Account);
         break;
-
+      case "payment_intent.succeeded":
+        await handlePaymentIntentSuccess(
+          event.data.object as Stripe.PaymentIntent
+        );
+        break;
       default:
         console.log(`Unhandled event type: ${event.type}`);
     }

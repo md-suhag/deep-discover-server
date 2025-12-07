@@ -20,5 +20,9 @@ router.patch(
   validateRequest(BookingValidation.updateBookingStatusZodSchema),
   BookingControllers.updateBookingStatus
 );
-
+router.patch(
+  "/:id/complete",
+  checkAuth(USER_ROLES.TOURIST),
+  BookingControllers.completeBooking
+);
 export const bookingRoutes = router;
