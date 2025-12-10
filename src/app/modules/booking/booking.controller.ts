@@ -43,7 +43,7 @@ const payForBooking = catchAsync(async (req: Request, res: Response) => {
   sendResponse(res, {
     success: true,
     statusCode: StatusCodes.OK,
-    message: `Booking Completed successfully`,
+    message: `Payment initiated successfully`,
     data: result,
   });
 });
