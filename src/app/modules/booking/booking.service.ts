@@ -4,9 +4,9 @@ import { Listing } from "../listing/listing.model";
 import { Booking } from "./booking.model";
 import { IRequestBookingPayload } from "./booking.interface";
 import { BOOKING_STATUS } from "./booking.constant";
-import { IGuide } from "../guide/guide.interface";
 import { envVars } from "../../config/env";
 import stripe from "../../config/stripe";
+import { Guide } from "../guide/guide.model";
 
 const requestBooking = async (
   touristId: string,
@@ -62,13 +62,12 @@ const updateBookingStatus = async (
 
   return booking;
 };
-const completeBooking = async (bookingId: string, touristId: string) => {
-  const booking = await Booking.findById(bookingId).populate("guide");
+const payForBooking = async (bookingId: string, touristId: string) => {
+  const booking = await Booking.findById(bookingId);
 
   if (!booking) {
     throw new AppError(StatusCodes.NOT_FOUND, "Booking not found");
   }
-
   if (booking.tourist.toString() !== touristId) {
     throw new AppError(
       StatusCodes.FORBIDDEN,
@@ -80,13 +79,16 @@ const completeBooking = async (bookingId: string, touristId: string) => {
     throw new AppError(StatusCodes.BAD_REQUEST, "Booking is not accepted yet");
   }
 
-  // Guide must have a connected stripe account id
-  const guide = booking.guide as unknown as IGuide;
+  const guideProfile = await Guide.findOne({ user: booking.guide });
 
-  if (!guide.stripeAccountId) {
+  if (!guideProfile) {
+    throw new AppError(StatusCodes.NOT_FOUND, "Guide profile not found");
+  }
+
+  if (!guideProfile.stripeAccountId) {
     throw new AppError(
       StatusCodes.BAD_REQUEST,
-      "Guide has no Stripe connected account"
+      "Guide does not have a connected Stripe account"
     );
   }
 
@@ -95,26 +97,28 @@ const completeBooking = async (bookingId: string, touristId: string) => {
   const applicationFee =
     (amount * Number(envVars.APPLICATION_FEE_PERCENT || 10)) / 100;
 
-  // ---------------------------
-  // Stripe Destination Charge
-  // ---------------------------
   const paymentIntent = await stripe.paymentIntents.create({
     amount,
     currency: "usd",
-    customer: booking.tourist.toString(),
     transfer_data: {
-      destination: guide.stripeAccountId,
+      destination: guideProfile.stripeAccountId,
     },
+    automatic_payment_methods: { enabled: true },
     application_fee_amount: Math.round(applicationFee),
+    metadata: {
+      bookingId,
+      touristId,
+      guideId: booking.guide.toString(),
+    },
   });
 
   booking.transactionId = paymentIntent?.id;
   await booking.save();
 
-  return booking;
+  return { clientSecret: paymentIntent.client_secret };
 };
 export const BookingServices = {
   requestBooking,
   updateBookingStatus,
-  completeBooking,
+  payForBooking,
 };

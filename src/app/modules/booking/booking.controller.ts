@@ -34,11 +34,11 @@ const updateBookingStatus = catchAsync(async (req: Request, res: Response) => {
     data: result,
   });
 });
-const completeBooking = catchAsync(async (req: Request, res: Response) => {
+const payForBooking = catchAsync(async (req: Request, res: Response) => {
   const bookingId = req.params.id;
   const touristId = req.user.userId;
 
-  const result = await BookingServices.completeBooking(bookingId, touristId);
+  const result = await BookingServices.payForBooking(bookingId, touristId);
 
   sendResponse(res, {
     success: true,
@@ -51,5 +51,5 @@ const completeBooking = catchAsync(async (req: Request, res: Response) => {
 export const BookingControllers = {
   requestBooking,
   updateBookingStatus,
-  completeBooking,
+  payForBooking,
 };

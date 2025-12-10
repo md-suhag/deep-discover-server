@@ -21,8 +21,8 @@ router.patch(
   BookingControllers.updateBookingStatus
 );
 router.patch(
-  "/:id/complete",
+  "/:id/pay",
   checkAuth(USER_ROLES.TOURIST),
-  BookingControllers.completeBooking
+  BookingControllers.payForBooking
 );
 export const bookingRoutes = router;
